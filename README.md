@@ -15,3 +15,8 @@ Okay, so the project just involves having a program that takes the template file
 
 Okay, here we go.
 
+## 2020-06-29 11:35:11
+Started by copying the static files from the Code Clinic exercise files. I could not find a Dreamweaver CC Essential Training course by Jason Williamson, so it's a good thing Skoglund provided them. The project has a bunch of images that aren't used on the single HTML page we'll be using, so I opened that page to see what images it actually uses and deleted the rest. I'm live-serving the page now and (other than the internal links not working because it's the only page I have), it looks fine.
+
+Now to figure out how to use ERB.
+
