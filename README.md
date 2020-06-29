@@ -114,3 +114,14 @@ FYI:
     <li>water</li>
 </ul>
 ```
+
+## 2020-06-29 14:26:39
+So, I'm looking a the CSV files and the HTML file. The project is a school's page for a Graphics Design degree. The dynamic part is the curriculum list, which is stored in the CSV files: first_semester.csv and second_semester.csv. (The HTML file has listings for four semesters. What's up with that?)
+
+Each CSV file is two "columns." The first, with a heading designating the semester, is the course number and name. Second column, with the heading "credit hours," is just that. I noticed that the HTML file has the course number in bold, so that'll need to be isolated. No problem. Split the "semester" column by spaces, take the first item for course number, and rejoin the rest.
+
+## 2020-06-29 16:04:03
+I have a basic `Curriculum` class that can be passed a CSV file. It has a more user-friendly #title based on the filename (I should have a setter in case the filename is particuarly ugly), and `#get_data` to actually retrieve the contents of the file. As I started writing code to work with the data, I decided to get to know the CSV class a little better, so I'm reading its docs.
+
+## 2020-06-29 16:54:27
+My Curriculum class now retrieves data from the CSV file and parses it into an array of hashes with `:code`, `:course`, and `:hours`. Time to hack up some HTML. (There's not really much to do. The only dynamic part right now would be a couple tables to display the curriculum data. Maybe I'll add some other dynamic elements to make things interesting.)
