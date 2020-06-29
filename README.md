@@ -128,3 +128,15 @@ My `Curriculum` class now retrieves data from the CSV file and parses it into an
 
 ## 2020-06-29 17:35:00
 Okay, I believe my HTML (now HTML.ERB) is sufficiently hacked up. It had four tables for the four semesters. I took it down to one table, wrapped it in code to loop through the curriculums, and replaced the series of rows with code to write a row for each course within a curriculum. I'm not sure yet how to get the curriculums variable into. I'll start building the init.rb that will throw everything together, and that's probably where I'd create the ERB instances and pass them as variables.
+
+## 2020-06-29 19:01:18
+In between numerous interruptions, I've completed a basic program that:
+
+1. Reads any available CSV files in the `_assets` directory (need a way to reject any that aren't the right format)
+2. Creates `Curriculum` objects from those files
+3. Puts those objects in an array (sorted by semester number)
+4. Prints a list of courses in each `Curriculum`
+
+In the `init.rb`, steps 1-3 are in a function, step 4 is another. The second is mostly for demonstration, as it does basically the same thing as the loop in the ERB template.
+
+Now to figure out how to get the curriculums array into there.
