@@ -6,9 +6,13 @@ class Curriculum
         @courses = populate ? get_data! : []
     end
 
-    def title
+    def semester_string
         temp = File.basename(@file_base, ".csv")
-        temp.split(/ |\_/).map(&:capitalize).join(" ")
+        temp.split("_").first.capitalize
+    end
+
+    def semester_number
+        ["first", "second", "third", "fourth"].find_index(self.semester_string.downcase) + 1
     end
 
     def get_data
@@ -30,5 +34,13 @@ class Curriculum
 
     def courses
         @courses
+    end
+
+    def course_list
+        list = ""
+        @courses.each do |course|
+            list << "#{course[:code]}\t#{course[:name]} (#{course[:hours].to_s} cr hrs)\n"
+        end
+        list
     end
 end
