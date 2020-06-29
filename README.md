@@ -124,4 +124,7 @@ Each CSV file is two "columns." The first, with a heading designating the semest
 I have a basic `Curriculum` class that can be passed a CSV file. It has a more user-friendly #title based on the filename (I should have a setter in case the filename is particuarly ugly), and `#get_data` to actually retrieve the contents of the file. As I started writing code to work with the data, I decided to get to know the CSV class a little better, so I'm reading its docs.
 
 ## 2020-06-29 16:54:27
-My Curriculum class now retrieves data from the CSV file and parses it into an array of hashes with `:code`, `:course`, and `:hours`. Time to hack up some HTML. (There's not really much to do. The only dynamic part right now would be a couple tables to display the curriculum data. Maybe I'll add some other dynamic elements to make things interesting.)
+My `Curriculum` class now retrieves data from the CSV file and parses it into an array of hashes with `:code`, `:name`, and `:hours`. Time to hack up some HTML. (There's not really much to do. The only dynamic part right now would be a couple tables to display the curriculum data. Maybe I'll add some other dynamic elements to make things interesting.)
+
+## 2020-06-29 17:35:00
+Okay, I believe my HTML (now HTML.ERB) is sufficiently hacked up. It had four tables for the four semesters. I took it down to one table, wrapped it in code to loop through the curriculums, and replaced the series of rows with code to write a row for each course within a curriculum. I'm not sure yet how to get the curriculums variable into. I'll start building the init.rb that will throw everything together, and that's probably where I'd create the ERB instances and pass them as variables.
