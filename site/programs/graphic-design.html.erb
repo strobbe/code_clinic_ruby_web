@@ -31,22 +31,21 @@
   <blockquote>Roux Academy's Graphic Desgin program helped me mature both as a designer and as a creative professional. Their cross-disciplinary approach helped me see multiple sides and solutions to every problem I encountered, and that's something that has translated to how I approach design in my career. Roux Academy was tremendously important in helping shape the designer I've become. <span class="quote">&#8211;Tabitha Knowles, Lead Designer Veroscare Partners</span></blockquote>
   <h2>Required Curriculum</h2>
   <p>While every program is different and course loads are tailored to meet the individual student&rsquo;s needs, this list represents the required curriculum for any student seeking a BA in Graphic Design.</p>
-  <% curriculums = ["First Semester", "Second Semester"] %>
   <% @curriculums.each do |curriculum| %>
   <table>
-  <caption><%= curriculum.title %> course load for Graphic Design degree</caption>
+  <caption><%= curriculum.semester_string %> semester course load for Graphic Design degree</caption>
   <colgroup>
   <col id="semester">
   <col id="credits">
   </colgroup>
     <tr>
-      <th scope="col"><%= curriculum.title %></th>
+      <th scope="col"><%= curriculum.semester_string %> Semester</th>
       <th scope="col">credit hours</th>
     </tr>
     <% curriculum.courses.each do |course| %>
     <tr>
-      <td><strong><%= course.code %></strong><strong><%= course.name %></td>
-      <td><strong><%= course.hours %></td>
+      <td><strong><%= course[:code] %></strong> <%= course[:name] %></td>
+      <td><%= course[:hours] %></td>
     </tr>
     <% end %>
   </table>

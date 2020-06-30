@@ -21,7 +21,7 @@ class Curriculum
             course = {}
             codename = row[0].split
             course[:code] = codename.shift
-            course[:name] = codename.join(' ')
+            course[:name] = codename.join(' ').strip
             course[:hours] = row[1].to_i
             data << course
         end
