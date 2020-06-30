@@ -22,16 +22,8 @@ end
 
 def inject_courses(array, template)
     source_path = HTML_DIR + template
-    erb = ERB.new(File.read(source_path), eoutvar: "array")
+    erb = ERB.new(File.read(source_path))
     return erb    
-end
-
-def print_courses(array)
-    array.each do |curriculum|
-        puts "#{curriculum.semester_string} Semester"
-        puts curriculum.course_list
-        puts
-    end
 end
 
 def write_html(erb)
@@ -42,6 +34,5 @@ def write_html(erb)
 end
 
 @curriculums = get_curriculums
-# print_courses(curriculums)
-erb = inject_courses(@curriculums, TEMPLATE_FILE)
-write_html(erb)
+curriculum_erb = inject_courses(@curriculums, TEMPLATE_FILE)
+write_html(curriculum_erb)
