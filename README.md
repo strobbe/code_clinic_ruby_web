@@ -142,5 +142,80 @@ In the `init.rb`, steps 1-3 are in a function, step 4 is another. The second is 
 Now to figure out how to get the curriculums array into there.
 
 ## 2020-06-29 20:18:44
-And I'm done. init.rb is complete and successfully "injects" the array of Curriculum objects into the ERB template file and writes the result to an appropriately named HTML file. The ERB constructor has an option called eoutvar that can be used to send a variable. I used that to include the array of Curriculum objects, but I'm ot clear yet how to send multiple variables. A hash, maybe? Or perhaps it has something to do with "bindings." After I watch the solution videos for the Code Clinic, I'll look more into templating and see how it's supposed to be done.
+And I'm done. init.rb is complete and successfully "injects" the array of Curriculum objects into the ERB template file and writes the result to an appropriately named HTML file. The ERB constructor has an option called eoutvar that can be used to send a variable. I used that to include the array of Curriculum objects, but I'm not clear yet how to send multiple variables. A hash, maybe? Or perhaps it has something to do with "bindings." After I watch the solution videos for the Code Clinic, I'll look more into templating and see how it's supposed to be done.
 
+## 2020-06-29 22:34:03
+Now to see how my solution differs from the official one. 
+
+
+### Overview
+
+As far as organization, he put his ERB file under `_assets` instead of under programs where I had it. That makes sense -- put all the pre-compiled files one place and the compiled ones another. On a real website, programs is probably where all the degree program pages would be. He also gave his main program file a more meaningful name (`merge_template.rb`). I was just used to all the programs in the rest of the series being started with init.rb.
+
+### Parsing CSV Files
+
+He's going with CVS.read to get the contents of the CSV files whereas I went with CVS.foreach to loop through the rows right away. I'm not sure yet what are the advantages of either.
+
+Sidenote: I'm peaking at the Ruby file for the CVS class. I should look through it and see how it does what it does.
+
+### ERB Templating
+
+I know a fair amount about writing ERB templates from using Rails, but this video should give me a better understanding of how the rendering works. Speaking of which, he calls an ERB instance a "renderer." Makes sense.
+
+Oh, good, he's talking about using instance variables in templates now. Maybe he'll explain how to pass multiple variables. "So the output uses values of variables as they are at the time that result is called, not back when the ERB instance was originally defined." Oh, I get it. You don't need to pass the variable to the ERB instance. It uses whatever (instance, I assume) variables it has access to when its #result is called. Huh. So what's eoutvar for?
+
+But he's not covering eoutvar. He's talking about...bindings. It's taking me a bit to wrap my head around them at how they fit in with ERB templating. The steps he takes in giving a basic example (in which the template is just a string using a variable) are:
+
+1. Inside the class, have accessors for some variable (for example, `:name`) and a `:template`
+2. Define a #render method with the line `ERB.new(@template).result(binding)`
+3. Then create an instance of the class, assign a value to the variable (`name`), and assign a template (string or file) to the `template`
+4. Call the instance's `#render` method to get the merged result.
+
+Creating the ERB instance inside the class and passing bindings to `#result` gives it the access it needs to that instance's variables. This gives me an idea for another project I've been working on (or was before I started spending so much time on these lessons).
+
+Yeah, I'm guessing he wrote his class and the merge file quite a bit differently from how I did. Hurm. Mine works, but I guess it's not technically correct.
+
+### CurriculumMaker
+
+Well, I already know he has a render or similar method in his class. Seems weird to me to have that in a class. What if you never have to render anything from it? And don't you then have to add the method to any class if you later decide you do need to render it to, say, a web page? It's a simple enough method, I guess, so probably not a big deal.
+
+Now I'm curious enough to write another version using his method. So I will.
+
+### Parsing Course Data
+
+I prefer the way I parseed the data, but I can see why he went the way he did. My class takes the CSV data and creates an array of hashes. Each hash is a course with keys for course :code, :name, and :hours. I use the Curriculum class to identify the courses for a particular semester, whereas he apparently will be creating a single instance of his CurriculumMaker class to hold all semesters. He keeps them separate by having each semester be a hash -- with the header (used in the web page table) as one value, and the array of courses as the other value.
+
+### Creating an ERB Template
+
+I'm guessing the ERB template I created for my solution will be very similar. Or maybe not since we structred our data very differently. Mostly the variables will be different, but the structure of the code should be mostly the same.
+
+I like the way he separates the course code from the course name. I knew there had to be a way to do it in one line, but couldn't figure it out. What I ended up doing -- in my Curriculum class, though, not in the template was to split the whole entry, shift out the code, and then rejoin the rest back into a full string:
+
+```ruby
+codename = row[0].split
+course[:code] = codename.shift
+course[:name] = codename.join(' ').strip
+```
+
+I wanted to do it all in one line but couldn't figure out how. What I didn't realize is that you can pass a number to #split to say how many items it should return. But passing it a 2, that keeps the the course name together. And I forgot about assigning an array of items to multiple varibles. Like so (his example but using my variables):
+
+```ruby
+course[:code], course[:name] = row[0].split(' ', 2)
+```
+Sweet.
+
+Final note from the video: Add `include ERB::Util` to the classes that will have content rendered and in the template use `h()` around outputted data to escape it. For security reasons.
+
+### Using the ERB template
+
+One more change to the `Curriculum` class (`CorriculumMaker` in the official solution) is to write an #add_template method that allows a template to be assigned after initialization. Then back to the main program file, add a line to call that method and pass our `.html.erb` file, and have a look at the rendered content. A few typo corrections later and it works! Well, it renders an HTML file to the screen. As HTML. Saving to a file comes next.
+
+### Saving Results to a New File
+
+Couple tips from this video: When using File.open() to write to a file, 1) use a block with File.open() to create a file as this wil close the file automatically when it's done, and 2) inside that block, use the object's write method to write to the file. I was using the append operatore. Which is probably fine, but I suspect this is more standard.
+
+Okay, let's run this and see what typos I made.
+
+Hey, no typos!
+
+He just answered my earlier question: Rails does not store rendered HTML files that it generates. It just sends it to the client browser.
